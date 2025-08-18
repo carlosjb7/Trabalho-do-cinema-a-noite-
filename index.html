@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CineTop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="imagem-logo">
+            <img src="imagens/Cinema.png" alt="Logo Cinema" class="logo">
+        </div>
+        
+        <div class="filmes">
+            <h1>🎬 Filmes em Cartaz</h1>
+            <a href="terror1.html">|☠️ A Hora do Mal</a>
+            <a href="terror2.html">|🔯 O Ritual</a>
+            <a href="animacao2.html">|🦇 Dracula</a>
+            <a href="acao1.html">|🦸 Superman</a>
+            <a href="animacao1.html">|🔵 Smurfs</a>
+        </div>
+
+        <div class="auth-buttons">
+            <button onclick="location.href='autenticacao.html'">Entrar</button>
+            <button onclick="location.href='cadastro.html'">Cadastrar</button>
+        </div>
+    </header>
+
+    <nav class="menu-container">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Lançamentos</a></li>
+            <li><a href="#">Sobre Nós</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Trabalhe Conosco</a></li>
+            <li class="search-box">
+                <span>🔍</span>
+                <input type="text" placeholder="Buscar filmes...">
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>🎞️ Filmes em Lançamento</h2>
+            <div class="galeria">
+                <img src="imagens/lancamento1.jpg" alt="Lançamento 1" onclick="location.href='#'">
+                <img src="imagens/lancamento2.jpg" alt="Lançamento 2" onclick="location.href='#'">
+                <img src="imagens/lancamento3.jpg" alt="Lançamento 3" onclick="location.href='#'">
+            </div>
+        </section>
+
+        <section>
+            <h2>🎬 Filmes em Cartaz</h2>
+            <div class="galeria">
+                <img src="imagens/A hora do mal.png" alt="A Hora do Mal" onclick="location.href='#'">
+                <img src="imagens/Imagem2.png" alt="O Ritual" onclick="location.href='#'">
+                <img src="imagens/Imagem3.png" alt="Drácula" onclick="location.href='#'">
+                <img src="imagens/Imagem4.png" alt="Superman" onclick="location.href='detalhes.html'">
+                <img src="imagens/Imagem5.png" alt="Smurfs" onclick="location.href='#'">
+            </div>
+        </section>
+
+        <section>
+            <h2>📂 Categorias</h2>
+        
+            <div class="filtro-categorias">
+                <button data-cat="todos" class="btn-filtro active">Todos</button>
+                <button data-cat="terror" class="btn-filtro">Terror</button>
+                <button data-cat="animacao" class="btn-filtro">Animação</button>
+                <button data-cat="acao" class="btn-filtro">Ação</button>
+            </div>
+        
+            <div class="categoria" data-categoria="terror">
+                <h3>🧟 Terror</h3>
+                <div class="galeria">
+                    <img src="imagens/Imagem6.png" alt="A Hora do Mal" onclick="location.href='terror1.html'">
+                    <img src="imagens/Imagem7.png" alt="O Ritual" onclick="location.href='terror2.html'">
+                </div>
+            
+            </div>
+        
+            <div class="categoria" data-categoria="animacao">
+                <h3>🧒 Animação</h3>
+                <div class="galeria">
+                    <img src="imagens/Imagem8.jpg" alt="Filme Animação 1" onclick="location.href='animacao1.html'">
+                    <img src="imagens/Imagem9.jpg" alt="Filme Animação 2" onclick="location.href='animacao2.html'">
+            </div>
+        
+            <div class="categoria" data-categoria="acao">
+                <h3>💥 Ação</h3>
+                <div class="galeria">
+                    <img src="imagens/Imagem10.jpg" alt="Superman" onclick="location.href='acao1.html'">
+                    <img src="imagens/Imagem11.jpg" alt="Missão Impossível" onclick="location.href='acao2.html'">
+                </div>
+            </div>
+        </section>        
+    </main>
+
+    <footer>
+        <p>CineTop - Seu cinema online favorito 🎥</p>
+        <p>Endereço: Av. Brasil 1005, CEP 07352-090 centro, São Paulo, SP Brasil</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        const botoesFiltro = document.querySelectorAll('.btn-filtro');
+        const categorias = document.querySelectorAll('.categoria');
+    
+        botoesFiltro.forEach(botao => {
+            botao.addEventListener('click', () => {
+                // Remove active de todos
+                botoesFiltro.forEach(b => b.classList.remove('active'));
+                botao.classList.add('active');
+    
+                const cat = botao.getAttribute('data-cat');
+    
+                categorias.forEach(sec => {
+                    if(cat === 'todos' || sec.getAttribute('data-categoria') === cat) {
+                        sec.style.display = 'block';
+                    } else {
+                        sec.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>    
+</body>
+</html>

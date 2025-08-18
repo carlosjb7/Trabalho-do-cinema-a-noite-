@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa de Assentos - Cinema</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .screen {
+      margin: 20px auto;
+      width: 300px;
+      height: 30px;
+      background: #ccc;
+      border-radius: 15px;
+      line-height: 30px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .seats {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .seat {
+      width: 30px;
+      height: 30px;
+      background-color: #444;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .seat.selected {
+      background-color: #6feaf6;
+    }
+
+    .seat.occupied {
+      background-color: #fff;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escolha seu assento</h1>
+  <div class="screen">TELA</div>
+
+  <div class="seats" id="seats">
+    <!-- Cadeiras vão aqui via JS -->
+  </div>
+
+  <button onclick="confirmSelection()">Confirmar Assento</button>
+
+  <script>
+    const seatsContainer = document.getElementById('seats');
+    const totalSeats = 50; // 5 filas de 10 cadeiras
+
+    // Exemplo: alguns assentos já ocupados
+    const occupiedSeats = [5, 12, 18, 25, 33];
+
+    // Criar os assentos dinamicamente
+    for (let i = 1; i <= totalSeats; i++) {
+      const seat = document.createElement('div');
+      seat.classList.add('seat');
+      seat.dataset.seatNumber = i;
+
+      if (occupiedSeats.includes(i)) {
+        seat.classList.add('occupied');
+      }
+
+      seat.addEventListener('click', () => {
+        if (seat.classList.contains('occupied')) return;
+
+        // Só permite selecionar 1 assento, então remove seleções anteriores
+        document.querySelectorAll('.seat.selected').forEach(s => s.classList.remove('selected'));
+        seat.classList.add('selected');
+      });
+
+      seatsContainer.appendChild(seat);
+    }
+
+    function confirmSelection() {
+      const selectedSeat = document.querySelector('.seat.selected');
+      if (!selectedSeat) {
+        alert('Por favor, selecione um assento.');
+        return;
+      }
+      alert('Você selecionou o assento número: ' + selectedSeat.dataset.seatNumber);
+    }
+  </script>
+</body>
+</html>
