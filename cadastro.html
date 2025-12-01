@@ -9,23 +9,86 @@
     <main class="centralizado">
         <h2>Cadastro</h2>
         <form id="formCadastro">
+            <div id="mensagem" style="display: none; padding: 10px; margin-bottom: 10px; border-radius: 4px;"></div>
+            
             <label>Nome completo:</label><br>
-            <input type="text" required><br><br>
+            <input type="text" name="nome" id="nome" required><br><br>
 
             <label>CPF:</label><br>
-            <input type="text" id="cpf" maxlength="14" oninput="maskCPF()" required><br><br>
+            <input type="text" id="cpf" name="cpf" maxlength="14" oninput="maskCPF()" required><br><br>
 
             <label>E-mail:</label><br>
-            <input type="email" required><br><br>
+            <input type="email" name="email" id="email" required><br><br>
             
             <label>Senha:</label><br>
-            <input type="password" required><br><br>
+            <input type="password" name="senha" id="senha" required><br><br>
             
             <button type="submit">Cadastrar</button>
             <button type="button" onclick="location.href='index.html'">Voltar</button>
         </form>
     </main>
 
-    <script src="/js/script.js"></script>
+    <script>
+        // Máscara CPF
+        function maskCPF() {
+            let cpf = document.getElementById("cpf");
+            let value = cpf.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            cpf.value = value;
+        }
+
+        // Submissão do formulário
+        document.getElementById("formCadastro").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            const mensagemDiv = document.getElementById("mensagem");
+            mensagemDiv.style.display = "none";
+            
+            const formData = {
+                nome: document.getElementById("nome").value.trim(),
+                cpf: document.getElementById("cpf").value,
+                email: document.getElementById("email").value.trim(),
+                senha: document.getElementById("senha").value
+            };
+
+            try {
+                const response = await fetch('/cadastrar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                mensagemDiv.style.display = "block";
+                
+                if (data.success) {
+                    mensagemDiv.style.backgroundColor = "#d4edda";
+                    mensagemDiv.style.color = "#155724";
+                    mensagemDiv.style.border = "1px solid #c3e6cb";
+                    mensagemDiv.textContent = data.message;
+                    
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'autenticacao.html';
+                    }, 1500);
+                } else {
+                    mensagemDiv.style.backgroundColor = "#f8d7da";
+                    mensagemDiv.style.color = "#721c24";
+                    mensagemDiv.style.border = "1px solid #f5c6cb";
+                    mensagemDiv.textContent = data.message;
+                }
+            } catch (error) {
+                mensagemDiv.style.display = "block";
+                mensagemDiv.style.backgroundColor = "#f8d7da";
+                mensagemDiv.style.color = "#721c24";
+                mensagemDiv.style.border = "1px solid #f5c6cb";
+                mensagemDiv.textContent = "Falha ao salvar os dados! Motivo: erro de conexão com o servidor";
+            }
+        });
+    </script>
 </body>
 </html>

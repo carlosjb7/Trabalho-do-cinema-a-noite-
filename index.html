@@ -20,9 +20,14 @@
             <a href="animacao1.html">|🔵 Smurfs</a>
         </div>
 
-        <div class="auth-buttons">
+        <div class="auth-buttons" id="authButtons">
             <button onclick="location.href='autenticacao.html'">Entrar</button>
             <button onclick="location.href='cadastro.html'">Cadastrar</button>
+        </div>
+
+        <div id="userStatus" style="display: none;">
+            <span id="statusText" style="margin-right: 10px; color: #28a745; font-weight: bold;"></span>
+            <button onclick="fazerLogout()" style="background-color: #dc3545;">SAIR</button>
         </div>
     </header>
 
@@ -104,6 +109,46 @@
 
     <script src="js/script.js"></script>
     <script>
+        // Verificar sessão ao carregar a página
+        async function verificarSessao() {
+            try {
+                const response = await fetch('/check-session');
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    // Usuário logado
+                    document.getElementById('authButtons').style.display = 'none';
+                    document.getElementById('userStatus').style.display = 'block';
+                    document.getElementById('statusText').textContent = `status Logado!! [${data.user.nome}]`;
+                } else {
+                    // Usuário não logado
+                    document.getElementById('authButtons').style.display = 'block';
+                    document.getElementById('userStatus').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erro ao verificar sessão:', error);
+            }
+        }
+
+        // Função de logout
+        async function fazerLogout() {
+            try {
+                const response = await fetch('/logout');
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = data.redirect || 'index.html';
+                }
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Verificar sessão ao carregar
+        verificarSessao();
+
+        // Filtros de categorias
         const botoesFiltro = document.querySelectorAll('.btn-filtro');
         const categorias = document.querySelectorAll('.categoria');
     
